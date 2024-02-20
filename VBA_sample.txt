@@ -1,0 +1,43 @@
+Option Explicit
+Sub 貼付()
+
+'マクロ処理中に、描画など余計なものを省略して高速化
+    With Application
+        .ScreenUpdating = False '描画を省略
+        .Calculation = xlCalculationManual '手動計算
+        .DisplayAlerts = False '警告を省略
+'        .EnableEvents = False 'DisplayAlertsよりこちらを設定した方が良い？
+    End With
+    
+    Dim lastrow, lastcol As Long
+    Dim path, path_mult As String
+    path = ActiveWorkbook.Sheets("RdMe").Range("A1")
+    path_mult = ActiveWorkbook.Sheets("RdMe").Range("A2")
+    
+    Workbooks.Open Filename:=path & "GDP_sec_decomp_2015.xlsx"
+    Dim karioki As Variant
+    lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+    lastcol = Cells(1, Columns.Count).End(xlToLeft).Column
+    
+    karioki = Sheets(1).Range(Sheets(1).Cells(1, 1), Sheets(1).Cells(lastrow, lastcol))
+    ActiveWorkbook.Close SaveChanges:=False
+    
+    ThisWorkbook.Activate
+    Sheets("合計").Range(Sheets("合計").Cells(2, 3), Sheets("合計").Cells(1 + lastrow, 2 + lastcol)) = karioki
+    Sheets("分解").Activate
+    Cells(1, 1).Select
+    ActiveWindow.ScrollColumn = 1
+    ActiveWindow.ScrollRow = 1
+    
+    
+'描画などの設定をリセット
+    With Application
+        .ScreenUpdating = True '描画する
+        .Calculation = xlCalculationAutomatic '自動計算
+        .DisplayAlerts = True '警告を行う
+    End With
+
+    ThisWorkbook.Save
+    
+End Sub
+
