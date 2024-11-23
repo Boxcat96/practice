@@ -12,13 +12,14 @@ range_x2 = lags_min:1:lags_max;
 % ノック配列を結合
 [x1_set,x2_set] = ndgrid(range_x1,range_x2); 
 knock_set = [x1_set(:),x2_set(:)];
+loop_num = size(knock_set,1);
 
 %% Do NOT Touch proc
 % waitbarを初期化
 hwaitbar = waitbar(0, 'Processing...', 'Name', '無限ノックツール');
 
 % ノックループ開始
-for ii = 1:size(knock_set,1)
+for ii = 1:loop_num
 
     % このループで使用するノックセット
     x1 = knock_set(ii,1);
@@ -46,7 +47,7 @@ for ii = 1:size(knock_set,1)
     xlswrite(excelFileName, data)
     
     % waitbarを更新
-    waitbar(ii/size(knock_set,1), hwaitbar, sprintf('実行中...%d%%', round(ii/size(knock_set,1)*100)));
+    waitbar(ii/loop_num, hwaitbar, sprintf('実行中...%d%%', round(ii/loop_num*100)));
 end
 
 % waitbarを閉じる
