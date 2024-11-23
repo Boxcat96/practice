@@ -1,20 +1,18 @@
-clc; clear all; tic;
+clc; clear all; 
+tic;
 %% ループの回数を指定
-seed_min = 50;
-seed_max = 53;
-lags_min = 2;
-lags_max = 3;
 
 % ノックする配列の作成
-range_x1 = seed_min:1:seed_max; 
-range_x2 = lags_min:1:lags_max;
-
-% ノック配列を結合
-[x1_set,x2_set] = ndgrid(range_x1,range_x2); 
-knock_set = [x1_set(:),x2_set(:)];
-loop_num = size(knock_set,1);
+range_x1 = 50:53; % シード
+range_x2 = 2:3;   % ラグ
 
 %% Do NOT Touch proc
+
+% ノック配列の作成
+[x1_set,x2_set] = ndgrid(range_x1,range_x2); 
+knock_set = [x1_set(:),x2_set(:)]; % 結合されたノック配列
+loop_num = size(knock_set,1); % ループ回数
+
 % waitbarを初期化
 hwaitbar = waitbar(0, 'Processing...', 'Name', '無限ノックツール');
 
@@ -53,5 +51,6 @@ end
 % waitbarを閉じる
 close(hwaitbar);
 
+% 終了
 disp('ノック終了！');
 toc;
